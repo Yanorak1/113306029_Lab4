@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Drum Kit</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+</head>
+
+<body>
+
+  <h1 id="title">Drum 🥁 Kit</h1>
+  <div class="set">
+    <button class="w drum">w</button>
+    <button class="a drum">a</button>
+    <button class="s drum">s</button>
+    <button class="d drum">d</button>
+    <button class="j drum">j</button>
+    <button class="k drum">k</button>
+    <button class="l drum">l</button>
+  </div>
+
+  <script>
+    // 音效對應表
+    const sounds = {
+      w: "sounds/crash.mp3",
+      a: "sounds/kick-bass.mp3",
+      s: "sounds/snare.mp3",
+      d: "sounds/tom-1.mp3",
+      j: "sounds/tom-2.mp3",
+      k: "sounds/tom-3.mp3",
+      l: "sounds/tom-4.mp3"
+    };
+
+    // 播放音效的函數
+    function playSound(key) {
+      const soundFile = sounds[key];
+      if (soundFile) {
+        console.log(`Playing sound for '${key}'`); //${key}會被替換為 key 變數的值。
+        const audio = new Audio(soundFile);
+        audio.play();
+      } else {
+        console.log(`No sound mapped for key: '${key}'`);
+      }
+    }
+    function pressEffect(key){
+      const button = document.querySelector(`.${key}`); 
+      if (button) {
+        button.classList.add("pressed");
+      }
+      setTimeout(() =>{
+        button.classList.remove("pressed");
+      }, 100)
+    }
+
+    // 註冊事件監聽器
+    function start() {
+      // 為按鈕添加點擊事件
+      const buttons = document.querySelectorAll(".drum");
+      buttons.forEach(button => {
+        button.addEventListener("click", function () {
+          const key = this.innerHTML; // 獲取按鈕上的文字
+          playSound(key);
+          pressEffect(key);
+        });
+      });
+
+      // 為按鍵添加鍵盤事件
+      document.addEventListener("keydown", function (event) {
+        playSound(event.key); // 傳遞鍵盤按下的鍵
+      });
+    }
+    
+    // 當頁面載入完成後執行 start 函數
+    window.addEventListener("load", start);
+  </script>
+</body>
+
+</html>
